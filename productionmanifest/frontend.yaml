@@ -2,20 +2,33 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: configmap-fe
-  namespace: devops-musyaffadli
 data:
-    #REACT_APP_BACKEND_URL: "cilist-be-svc.devops-musyaffadli.svc.cluster.local:5000"
-    #REACT_APP_BACKEND_URL: "cilist-be-svc:5000"
-    REACT_APP_BACKEND_URL: "ae163161bc875483aba1616828a46c78-21da8f3f93bdd9db.elb.us-east-1.amazonaws.com/be" 
+    REACT_APP_BACKEND_URL: "bp.musyaffadli.com/be" 
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: fe-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: cilist-fe
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: cilist-fe-svc
-  namespace: devops-musyaffadli
 spec:
-  externalTrafficPolicy: Cluster
-  internalTrafficPolicy: Cluster
   ipFamilies:
   - IPv4
   ports:
@@ -25,17 +38,30 @@ spec:
   selector:
     app: cilist
     tier: frontend
-  type: NodePort
-status:
-  loadBalancer: {}
+  type: ClusterIP
+ ---
+ apiVersion: v1
+kind: Service
+metadata:
+  name: cilist-fe-svc-preview
+spec:
+  ipFamilies:
+  - IPv4
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: cilist
+    tier: frontend
+  type: ClusterIP
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: cilist-fe
-  namespace: devops-musyaffadli
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: cilist
@@ -46,19 +72,17 @@ spec:
         app: cilist
         tier: frontend
     spec:
-      #volumes:
-      #- name: configmap-fe
-      #  configMap:
-      #    name: configmap-fe
       containers:
       - image: ravennaras/cilist:fejenkins
+        imagePullPolicy: Always
         name: cilist-fe
         ports:
         - containerPort: 3000
-        #volumeMounts:
-        #- name: configmap-fe
-        #  mountPath: "/app/.env"
-        # subPath: ".env"
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 200m
         env:
         - name: REACT_APP_BACKEND_URL
           valueFrom:
@@ -66,11 +90,15 @@ spec:
               name: configmap-fe
               key: REACT_APP_BACKEND_URL
       restartPolicy: Always
+  strategy:
+   blueGreen:
+     autoPromotionEnabled: false
+     activeService: cilist-fe-svc
+     previewService: cilist-fe-svc-preview
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  namespace: devops-musyaffadli
   name: cilist-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
@@ -79,7 +107,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: ae163161bc875483aba1616828a46c78-21da8f3f93bdd9db.elb.us-east-1.amazonaws.com
+    - host: bp.musyaffadli.com
       http:
         paths:
         - path: /
@@ -89,11 +117,24 @@ spec:
               name: cilist-fe-svc
               port:
                 number: 3000
-        # ADD IF YOU WANT YOUR BACKEND EXPOSED
         - path: /be
           pathType: Prefix
           backend:
             service:
               name: cilist-be-svc
+              port:
+                number: 5000
+         - path: /fe-prv
+          pathType: Prefix
+          backend:
+            service:
+              name: cilist-fe-svc-preview
+              port:
+                number: 3000
+         - path: /be-prv
+          pathType: Prefix
+          backend:
+            service:
+              name: cilist-be-svc-preview
               port:
                 number: 5000
