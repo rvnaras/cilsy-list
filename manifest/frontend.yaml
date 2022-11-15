@@ -1,0 +1,99 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-fe
+  namespace: devops-musyaffadli
+data:
+    #REACT_APP_BACKEND_URL: "cilist-be-svc.devops-musyaffadli.svc.cluster.local:5000"
+    #REACT_APP_BACKEND_URL: "cilist-be-svc:5000"
+    REACT_APP_BACKEND_URL: "ae163161bc875483aba1616828a46c78-21da8f3f93bdd9db.elb.us-east-1.amazonaws.com/be" 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cilist-fe-svc
+  namespace: devops-musyaffadli
+spec:
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: cilist
+    tier: frontend
+  type: NodePort
+status:
+  loadBalancer: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cilist-fe
+  namespace: devops-musyaffadli
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cilist
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: cilist
+        tier: frontend
+    spec:
+      #volumes:
+      #- name: configmap-fe
+      #  configMap:
+      #    name: configmap-fe
+      containers:
+      - image: ravennaras/cilist:fejenkins
+        name: cilist-fe
+        ports:
+        - containerPort: 3000
+        #volumeMounts:
+        #- name: configmap-fe
+        #  mountPath: "/app/.env"
+        # subPath: ".env"
+        env:
+        - name: REACT_APP_BACKEND_URL
+          valueFrom:
+            configMapKeyRef:
+              name: configmap-fe
+              key: REACT_APP_BACKEND_URL
+      restartPolicy: Always
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: devops-musyaffadli
+  name: cilist-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    #alb.ingress.kubernetes.io/scheme: internet-facing
+    #alb.ingress.kubernetes.io/target-type: ip
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: ae163161bc875483aba1616828a46c78-21da8f3f93bdd9db.elb.us-east-1.amazonaws.com
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: cilist-fe-svc
+              port:
+                number: 3000
+        # ADD IF YOU WANT YOUR BACKEND EXPOSED
+        - path: /be
+          pathType: Prefix
+          backend:
+            service:
+              name: cilist-be-svc
+              port:
+                number: 5000
