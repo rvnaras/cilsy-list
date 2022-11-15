@@ -29,7 +29,7 @@ pipeline {
     }
   }
   environment{
-    VERSION="${env.BUILD_ID}-${env.GIT_COMMIT}"
+    VERSION="${env.BUILD_ID}-${env.GIT_COMMIT,length=6}"
     DOCKERHUB_CREDENTIALS=credentials('docker')
     // ARGOCD_CREDENTIALS=credentials('argocd')
     // ARGOCD_URL=credentials('argocd-url')
@@ -42,8 +42,8 @@ pipeline {
 	      echo 'version is' ${VERSION}
               echo 'building deployment image'
               echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
-              docker build -f ./backend/Dockerfile.be -t ravennaras/cilist-staging:be${VERSION} . --network host 
-              docker build -f ./frontend/Dockerfile.fe -t ravennaras/cilist-staging:fe${VERSION} . --network host
+              docker build -f ./backend/Dockerfile.be -t ravennaras/cilist-staging:be-${VERSION} . --network host 
+              docker build -f ./frontend/Dockerfile.fe -t ravennaras/cilist-staging:fe-${VERSION} . --network host
             '''
         }
       }
@@ -53,10 +53,10 @@ pipeline {
         container('docker') {
             sh '''
               echo 'check deployment image vulnerabilities'
-              # docker run --network host aquasec/trivy image ravennaras/cilist-staging:be${VERSION} --security-checks vuln
-              # docker run --network host aquasec/trivy image ravennaras/cilist-staging:fe${VERSION} --security-checks vuln
-              docker push ravennaras/cilist-staging:be${VERSION}
-              docker push ravennaras/cilist-staging:fe${VERSION}
+              # docker run --network host aquasec/trivy image ravennaras/cilist-staging:be-${VERSION} --security-checks vuln
+              # docker run --network host aquasec/trivy image ravennaras/cilist-staging:fe-${VERSION} --security-checks vuln
+              docker push ravennaras/cilist-staging:be-${VERSION}
+              docker push ravennaras/cilist-staging:fe-${VERSION}
             '''
         }
       }
