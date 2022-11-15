@@ -5,7 +5,7 @@ metadata:
 data:
     REACT_APP_BACKEND_URL: "bp.musyaffadli.com/be" 
 ---
-apiVersion: autoscaling/v2
+apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: fe-hpa
@@ -16,13 +16,7 @@ spec:
     name: cilist-fe
   minReplicas: 1
   maxReplicas: 5
-  metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 50
+  targetCPUUtilizationPercentage: 75
 ---
 apiVersion: v1
 kind: Service
