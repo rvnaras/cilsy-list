@@ -29,6 +29,7 @@ pipeline {
     }
   }
   environment{
+    VERSION="${env.BUILD_ID}-${env.GIT_COMMIT}"
     DOCKERHUB_CREDENTIALS=credentials('docker')
     ARGOCD_CREDENTIALS=credentials('argocd')
     ARGOCD_URL=credentials('argocd-url')
@@ -40,8 +41,8 @@ pipeline {
             sh '''
               echo 'building deployment image'
               echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
-              docker build -f ./backend/Dockerfile.be -t ravennaras/cilist:bejenkins . --network host 
-              docker build -f ./frontend/Dockerfile.fe -t ravennaras/cilist:fejenkins . --network host
+              docker build -f ./backend/Dockerfile.be -t ravennaras/cilist-production:be${VERSION} . --network host 
+              docker build -f ./frontend/Dockerfile.fe -t ravennaras/cilist-production:fe${VERSION} . --network host
             '''
         }
       }
@@ -51,10 +52,10 @@ pipeline {
         container('docker') {
             sh '''
               echo 'check deployment image vulnerabilities'
-              # docker run --network host aquasec/trivy image ravennaras/cilist:bejenkins --security-checks vuln
-              # docker run --network host aquasec/trivy image ravennaras/cilist:fejenkins --security-checks vuln
-              docker push ravennaras/cilist:bejenkins
-              docker push ravennaras/cilist:fejenkins
+              # docker run --network host aquasec/trivy image ravennaras/cilist-production:be${VERSION} --security-checks vuln
+              # docker run --network host aquasec/trivy image ravennaras/cilist-production:fe${VERSION} --security-checks vuln
+              docker push ravennaras/cilist-production:be${VERSION}
+              docker push ravennaras/cilist-production:fe${VERSION}
             '''
         }
       }
