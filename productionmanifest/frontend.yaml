@@ -5,7 +5,7 @@ metadata:
 data:
     REACT_APP_BACKEND_URL: "bp.musyaffadli.com/be" 
 ---
-apiVersion: autoscaling/v1
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: fe-hpa
