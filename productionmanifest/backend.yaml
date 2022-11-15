@@ -61,7 +61,7 @@ spec:
   ipFamilies:
   - IPv4
   ports:
-  - port: 5000
+  - port: 5001
     protocol: TCP
     targetPort: 5000
   selector:
@@ -128,7 +128,7 @@ spec:
               name: cilist-secret
               key: DB_SELECT
       restartPolicy: Always
-   strategy:
+  strategy:
     blueGreen:
       autoPromotionEnabled: false
       activeService: cilist-be-svc
