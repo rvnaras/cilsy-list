@@ -29,7 +29,7 @@ pipeline {
     }
   }
   environment{
-    VERSION="${env.BUILD_ID}-${GIT_COMMIT[0..7]}"
+    VERSION="${env.BUILD_ID}-${GIT_COMMIT[0..2]}"
     DOCKERHUB_CREDENTIALS=credentials('docker')
     // ARGOCD_CREDENTIALS=credentials('argocd')
     // ARGOCD_URL=credentials('argocd-url')
