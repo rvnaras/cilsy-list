@@ -31,8 +31,8 @@ pipeline {
   environment{
     VERSION="${env.BUILD_ID}-${env.GIT_COMMIT}"
     DOCKERHUB_CREDENTIALS=credentials('docker')
-    ARGOCD_CREDENTIALS=credentials('argocd')
-    ARGOCD_URL=credentials('argocd-url')
+    // ARGOCD_CREDENTIALS=credentials('argocd')
+    // ARGOCD_URL=credentials('argocd-url')
   }
   stages {
     stage('BUILD') {
