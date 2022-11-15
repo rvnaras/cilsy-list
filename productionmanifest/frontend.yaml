@@ -12,7 +12,7 @@ metadata:
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
-    kind: Deployment
+    kind: Rollout
     name: cilist-fe
   minReplicas: 1
   maxReplicas: 5
@@ -48,7 +48,7 @@ spec:
   ipFamilies:
   - IPv4
   ports:
-  - port: 3000
+  - port: 3001
     protocol: TCP
     targetPort: 3000
   selector:
@@ -90,7 +90,7 @@ spec:
               name: configmap-fe
               key: REACT_APP_BACKEND_URL
       restartPolicy: Always
-  strategy:
+ strategy:
    blueGreen:
      autoPromotionEnabled: false
      activeService: cilist-fe-svc
@@ -130,11 +130,11 @@ spec:
             service:
               name: cilist-fe-svc-preview
               port:
-                number: 3000
+                number: 3001
          - path: /be-prv
           pathType: Prefix
           backend:
             service:
               name: cilist-be-svc-preview
               port:
-                number: 5000
+                number: 5001
