@@ -11,7 +11,7 @@ metadata:
   name: fe-hpa
 spec:
   scaleTargetRef:
-    apiVersion: apps/v1
+    apiVersion: argoproj.io/v1alpha1
     kind: Rollout
     name: cilist-fe
   minReplicas: 1
