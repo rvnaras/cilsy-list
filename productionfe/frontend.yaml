@@ -90,12 +90,15 @@ spec:
       activeService: cilist-fe-svc
       previewService: cilist-fe-svc-preview
 ---
-apiVersion: networking.k8s.io/v1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: cilist-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    ingress.kubernetes.io/proxy-body-size: 100M
+    kubernetes.io/ingress.class: nginx
+    ingress.kubernetes.io/app-root: /
     #alb.ingress.kubernetes.io/scheme: internet-facing
     #alb.ingress.kubernetes.io/target-type: ip
 spec:
