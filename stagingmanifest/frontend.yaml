@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: configmap-fe
 data:
-    REACT_APP_BACKEND_URL: 54.226.249.115:30100
+    REACT_APP_BACKEND_URL: 'ec2-54-226-249-115.compute-1.amazonaws.com:30100'
 ---
 apiVersion: v1
 kind: Service
