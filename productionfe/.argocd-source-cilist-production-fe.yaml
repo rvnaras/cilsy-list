@@ -1,3 +1,3 @@
 kustomize:
   images:
-  - ravennaras/cilist-production-fe:fe-13575
+  - ravennaras/cilist-production-fe:fe-14a7b
