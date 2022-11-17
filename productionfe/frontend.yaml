@@ -111,13 +111,6 @@ spec:
               name: cilist-fe-svc
               port:
                 number: 3000
-        - path: /be
-          pathType: Prefix
-          backend:
-            service:
-              name: cilist-be-svc
-              port:
-                number: 5000
         - path: /fe-prv
           pathType: Prefix
           backend:
@@ -125,10 +118,3 @@ spec:
               name: cilist-fe-svc-preview
               port:
                 number: 3001
-        - path: /be-prv
-          pathType: Prefix
-          backend:
-            service:
-              name: cilist-be-svc-preview
-              port:
-                number: 5001
