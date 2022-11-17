@@ -45,10 +45,11 @@ spec:
   - port: 3000
     protocol: TCP
     targetPort: 3000
+    NodePort: 32000
   selector:
     app: cilist
     tier: frontend
-  type: ClusterIP
+  type: NodePort
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
@@ -114,10 +115,10 @@ spec:
               name: cilist-fe-svc
               port:
                 number: 3000
-        - path: /preview
-          pathType: Prefix
-          backend:
-            service:
-              name: cilist-fe-svc-preview
-              port:
-                number: 3000
+        # - path: /preview
+        #   pathType: Prefix
+        #   backend:
+        #     service:
+        #       name: cilist-fe-svc-preview
+        #       port:
+        #         number: 3000
