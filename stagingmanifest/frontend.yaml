@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: configmap-fe
 data:
-    REACT_APP_BACKEND_URL: 'http://ec2-54-226-249-115.compute-1.amazonaws.com:30100'
+    REACT_APP_BACKEND_URL: "http://ec2-54-226-249-115.compute-1.amazonaws.com:30100"
 ---
 apiVersion: v1
 kind: Service
@@ -42,7 +42,7 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: ravennaras/cilist-staging:fe-3d97
+      - image: ravennaras/cilist:frontend-v2
         name: cilist-fe
         ports:
         - containerPort: 3000
