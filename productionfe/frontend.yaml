@@ -30,7 +30,7 @@ spec:
     protocol: TCP
     targetPort: 3000
   selector:
-    app: cilist-fe
+    app: cilist
     tier: frontend
   type: ClusterIP
 ---
@@ -46,7 +46,7 @@ spec:
     protocol: TCP
     targetPort: 3000
   selector:
-    app: cilist-fe
+    app: cilist
     tier: frontend
   type: ClusterIP
 # apiVersion: v1
