@@ -32,7 +32,7 @@ spec:
   selector:
     app: cilist
     tier: frontend
-  type: NodePort
+  type: ClusterIP
 ---
 apiVersion: v1
 kind: Service
@@ -48,7 +48,7 @@ spec:
   selector:
     app: cilist
     tier: frontend
-  type: ClusterIP
+  type: NodePort
 # apiVersion: v1
 # kind: Service
 # metadata:
