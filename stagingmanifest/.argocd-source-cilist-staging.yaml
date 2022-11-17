@@ -1,3 +1,0 @@
-kustomize:
-  images:
-  - ravennaras/cilist-staging:fe-1992c
