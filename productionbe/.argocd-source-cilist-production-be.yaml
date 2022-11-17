@@ -1,3 +1,3 @@
 kustomize:
   images:
-  - ravennaras/cilist-production-be:be-11277
+  - ravennaras/cilist-production-be:be-12fde
