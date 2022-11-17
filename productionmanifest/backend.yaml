@@ -28,7 +28,7 @@ spec:
     kind: Rollout
     name: cilist-be
   minReplicas: 1
-  maxReplicas: 5
+  maxReplicas: 10
   targetCPUUtilizationPercentage: 75
 ---
 apiVersion: v1
