@@ -45,7 +45,7 @@ spec:
   - port: 3000
     protocol: TCP
     targetPort: 3000
-    NodePort: 32000
+    nodePort: 32000
   selector:
     app: cilist
     tier: frontend
