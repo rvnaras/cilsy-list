@@ -49,19 +49,6 @@ spec:
     app: cilist
     tier: frontend
   type: NodePort
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: cilist-fe-svc-preview
-# spec:
-#   type: NodePort
-#   selector:
-#     app: cilist-fe
-#   ports:
-#     - port: 80
-#       targetPort: http
-#       protocol: TCP
-#       name: http
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
@@ -107,13 +94,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: cilist-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    # ingress.kubernetes.io/proxy-body-size: 100M
-    # kubernetes.io/ingress.class: nginx
-    # ingress.kubernetes.io/app-root: /
-    # alb.ingress.kubernetes.io/scheme: internet-facing
-    # alb.ingress.kubernetes.io/target-type: ip
 spec:
   ingressClassName: nginx
   rules:
