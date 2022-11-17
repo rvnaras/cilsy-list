@@ -52,8 +52,8 @@ pipeline {
         container('docker') {
             sh '''
               echo 'check deployment image vulnerabilities'
-              docker run --network host aquasec/trivy image ravennaras/cilist-production-be:be-${VERSION} --security-checks vuln
-              docker run --network host aquasec/trivy image ravennaras/cilist-production-fe:fe-${VERSION} --security-checks vuln
+              # docker run --network host aquasec/trivy image ravennaras/cilist-production-be:be-${VERSION} --security-checks vuln
+              # docker run --network host aquasec/trivy image ravennaras/cilist-production-fe:fe-${VERSION} --security-checks vuln
               docker push ravennaras/cilist-production-be:be-${VERSION}
               docker push ravennaras/cilist-production-fe:fe-${VERSION}
             '''
