@@ -56,7 +56,7 @@ spec:
         tier: backend
     spec:
       containers:
-      - image: ravennaras/cilist:bejenkins
+      - image: ravennaras/cilist-staging:be-3d97
         name: cilist-be
         ports:
         - containerPort: 5000
