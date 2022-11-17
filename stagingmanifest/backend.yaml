@@ -6,8 +6,8 @@ type: Opaque
 data:
   DB_USER: cm9vdA==
   DB_PASS: cGFzc3dvcmQ=
-  DB_SELECT: cGVvcGxl
-  DB_ENDPOINT: Y2lsaXN0LWRiLmNhaDR6ZW9kdXZpMi51cy1lYXN0LTEucmRzLmFtYXpvbmF3cy5jb20=
+  DB_SELECT: c3RhZ2luZw==
+  DB_ENDPOINT: ZGIubXVzeWFmZmFkbGkuY29t
   MYSQL_ROOT_PASSWORD: cGFzc3dvcmQ=
 ---
 apiVersion: v1
