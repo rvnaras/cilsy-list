@@ -4,7 +4,7 @@ BIG PROJECT
 BIG PROJECT STEP
 
 1. provision EKS, RDS, etc.
-2. install needed eks add-on
+2. install needed add-on
 3. use repo rvnaras/cilsy-list
 4. configure RDS MySQL
 5. install kube metric server (IS A MUST!!!) kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
