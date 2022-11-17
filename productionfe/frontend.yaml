@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: configmap-fe
 data:
-    REACT_APP_BACKEND_URL: "dbc.musyaffadli.com" 
+    REACT_APP_BACKEND_URL: "http://dbc.musyaffadli.com" 
 ---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
