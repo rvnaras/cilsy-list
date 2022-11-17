@@ -4,3 +4,10 @@ kind: Kustomization
 resources:
 - backend.yaml
 - frontend.yaml
+images:
+- name: backend 
+  newName: ravennaras/cilist-staging
+  newTag: be-*
+- name: frontend
+  newName: ravennaras/cilist-staging
+  newTag: fe-*
