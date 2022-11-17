@@ -41,8 +41,8 @@ pipeline {
             sh '''
               echo 'building deployment image'
               echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
-              docker build -f ./backend/Dockerfile.be -t ravennaras/cilist-production:be-${VERSION} . --network host --no-cache --pull
-              docker build -f ./frontend/Dockerfile.fe -t ravennaras/cilist-production:fe-${VERSION} . --network host --no-cache --pull
+              docker build -f ./backend/Dockerfile.be -t ravennaras/cilist-production-be:be-${VERSION} . --network host --no-cache --pull
+              docker build -f ./frontend/Dockerfile.fe -t ravennaras/cilist-production-fe:fe-${VERSION} . --network host --no-cache --pull
             '''
         }
       }
@@ -52,10 +52,10 @@ pipeline {
         container('docker') {
             sh '''
               echo 'check deployment image vulnerabilities'
-              docker run --network host aquasec/trivy image ravennaras/cilist-production:be-${VERSION} --security-checks vuln
-              docker run --network host aquasec/trivy image ravennaras/cilist-production:fe-${VERSION} --security-checks vuln
-              docker push ravennaras/cilist-production:be-${VERSION}
-              docker push ravennaras/cilist-production:fe-${VERSION}
+              docker run --network host aquasec/trivy image ravennaras/cilist-production-be:be-${VERSION} --security-checks vuln
+              docker run --network host aquasec/trivy image ravennaras/cilist-production-fe:fe-${VERSION} --security-checks vuln
+              docker push ravennaras/cilist-production-be:be-${VERSION}
+              docker push ravennaras/cilist-production-fe:fe-${VERSION}
             '''
         }
       }
@@ -66,9 +66,11 @@ pipeline {
             sh '''
               echo 'deploy to cluster'
               argocd login $ARGOCD_URL --username $ARGOCD_CREDENTIALS_USR --password $ARGOCD_CREDENTIALS_PSW --insecure
-	      echo argocd login successful
-	      argocd app get cilist-production
-              argocd app sync cilist-production
+	            echo argocd login successful
+	            argocd app get cilist-production-be
+		          argocd app get cilist-production-fe
+              argocd app sync cilist-production-be
+			        argocd app sync cilist-production-fe
             '''
         }
       }

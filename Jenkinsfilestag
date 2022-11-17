@@ -42,8 +42,8 @@ pipeline {
 	      echo 'version is' ${VERSION}
               echo 'building deployment image'
               echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
-              docker build -f ./backend/Dockerfile.be -t ravennaras/cilist-staging:be-${VERSION} . --network host --no-cache --pull
-              docker build -f ./frontend/Dockerfile.fe -t ravennaras/cilist-staging:fe-${VERSION} . --network host --no-cache --pull
+              docker build -f ./backend/Dockerfile.be -t ravennaras/cilist-staging-be:be-${VERSION} . --network host --no-cache --pull
+              docker build -f ./frontend/Dockerfile.fe -t ravennaras/cilist-staging-fe:fe-${VERSION} . --network host --no-cache --pull
             '''
         }
       }
@@ -53,10 +53,10 @@ pipeline {
         container('docker') {
             sh '''
               echo 'check deployment image vulnerabilities'
-              # docker run --network host aquasec/trivy image ravennaras/cilist-staging:be-${VERSION} --security-checks vuln
-              # docker run --network host aquasec/trivy image ravennaras/cilist-staging:fe-${VERSION} --security-checks vuln
-              docker push ravennaras/cilist-staging:be-${VERSION}
-              docker push ravennaras/cilist-staging:fe-${VERSION}
+              # docker run --network host aquasec/trivy image ravennaras/cilist-staging-be:be-${VERSION} --security-checks vuln
+              # docker run --network host aquasec/trivy image ravennaras/cilist-staging-fe:fe-${VERSION} --security-checks vuln
+              docker push ravennaras/cilist-staging-be:be-${VERSION}
+              docker push ravennaras/cilist-staging-fe:fe-${VERSION}
             '''
         }
       }
@@ -67,9 +67,11 @@ pipeline {
             sh '''
               echo 'deploy to cluster'
               argocd login $ARGOCD_URL --username $ARGOCD_CREDENTIALS_USR --password $ARGOCD_CREDENTIALS_PSW --insecure
-	      echo argocd login successful
-	      argocd app get cilist-staging
-              argocd app sync cilist-staging
+	            echo argocd login successful
+	            argocd app get cilist-staging-be
+			        argocd app get cilist-staging-fe
+              argocd app sync cilist-staging-be
+			        argocd app sync cilist-staging-fe
             '''
         }
       }
