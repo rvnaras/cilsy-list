@@ -80,7 +80,7 @@ spec:
         tier: backend
     spec:
       containers:
-      - image: ravennaras/cilist-production-be:bejenkins
+      - image: ravennaras/cilist-production-be:be-30b1
         imagePullPolicy: Always
         name: cilist-be
         ports:

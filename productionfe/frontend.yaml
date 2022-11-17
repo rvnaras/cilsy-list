@@ -67,7 +67,7 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: ravennaras/cilist-production-fe:fejenkins
+      - image: ravennaras/cilist-production-fe:fe-30b1
         imagePullPolicy: Always
         name: cilist-fe
         ports:
