@@ -42,7 +42,7 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: ravennaras/cilist:frontend-v2
+      - image: ravennaras/cilist-staging:fe-130d9
         name: cilist-fe
         ports:
         - containerPort: 3000
