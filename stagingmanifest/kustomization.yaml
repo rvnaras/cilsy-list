@@ -2,12 +2,12 @@ namePrefix: cilist-staging-
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- backend.yaml
+# - backend.yaml
 - frontend.yaml
-images:
-- name: backend 
-  newName: ravennaras/cilist-staging
-  newTag: be-*
-- name: frontend
-  newName: ravennaras/cilist-staging
-  newTag: fe-*
+# images:
+# - name: backend 
+#   newName: ravennaras/cilist-staging
+#   newTag: be-*
+# - name: frontend
+#   newName: ravennaras/cilist-staging
+#   newTag: fe-*
