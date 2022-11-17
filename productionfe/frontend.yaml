@@ -111,7 +111,7 @@ spec:
               name: cilist-fe-svc
               port:
                 number: 3000
-        - path: /fe-prv
+        - path: /preview
           pathType: Prefix
           backend:
             service:
