@@ -42,7 +42,7 @@ spec:
   ipFamilies:
   - IPv4
   ports:
-  - port: 3001
+  - port: 3000
     protocol: TCP
     targetPort: 3000
   selector:
@@ -117,4 +117,4 @@ spec:
             service:
               name: cilist-fe-svc-preview
               port:
-                number: 3001
+                number: 3000
