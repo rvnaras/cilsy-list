@@ -24,12 +24,12 @@ metadata:
   name: be-hpa
 spec:
   scaleTargetRef:
-    apiVersion: argoproj.io/v1alpha1
-    kind: Rollout
+    apiVersion: apps/v1
+    kind: Deployment
     name: cilist-be
   minReplicas: 1
-  maxReplicas: 5
-  targetCPUUtilizationPercentage: 80
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 85
 ---
 apiVersion: v1
 kind: Service
@@ -39,32 +39,16 @@ spec:
   ipFamilies:
   - IPv4
   ports:
-  - port: 5000
+  - port: 80
     protocol: TCP
     targetPort: 5000
   selector:
     app: cilist
     tier: backend
-  type: ClusterIP
+  type: LoadBalancer
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: cilist-be-svc-preview
-spec:
-  ipFamilies:
-  - IPv4
-  ports:
-  - port: 5001
-    protocol: TCP
-    targetPort: 5000
-  selector:
-    app: cilist
-    tier: backend
-  type: ClusterIP
----
-apiVersion: argoproj.io/v1alpha1
-kind: Rollout
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: cilist-be
 spec:
@@ -80,7 +64,7 @@ spec:
         tier: backend
     spec:
       containers:
-      - image: ravennaras/cilist-production-be:be-30b1
+      - image: ravennaras/cilist-production-be:be-6141
         imagePullPolicy: Always
         name: cilist-be
         ports:
@@ -122,8 +106,3 @@ spec:
               name: cilist-secret
               key: DB_SELECT
       restartPolicy: Always
-  strategy:
-    blueGreen:
-      autoPromotionEnabled: false
-      activeService: cilist-be-svc
-      previewService: cilist-be-svc-preview

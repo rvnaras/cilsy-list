@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: configmap-fe
 data:
-    REACT_APP_BACKEND_URL: "bp.musyaffadli.com/be" 
+    REACT_APP_BACKEND_URL: "dbc.musyaffadli.com" 
 ---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
@@ -15,8 +15,8 @@ spec:
     kind: Rollout
     name: cilist-fe
   minReplicas: 1
-  maxReplicas: 5
-  targetCPUUtilizationPercentage: 80
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 85
 ---
 apiVersion: v1
 kind: Service
@@ -67,7 +67,7 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: ravennaras/cilist-production-fe:fe-30b1
+      - image: ravennaras/cilist-production-fe:fe-6141
         imagePullPolicy: Always
         name: cilist-fe
         ports:
