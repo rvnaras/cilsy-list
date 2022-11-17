@@ -109,7 +109,10 @@ spec:
               name: cilist-fe-svc
               port:
                 number: 3000
-        - path: /preview
+    - host: prev.musyaffadli.com
+      http:
+        paths:
+        - path: /
           pathType: Prefix
           backend:
             service:
