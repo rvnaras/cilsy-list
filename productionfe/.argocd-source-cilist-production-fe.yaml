@@ -1,0 +1,3 @@
+kustomize:
+  images:
+  - ravennaras/cilist-production-fe:fe-4678
