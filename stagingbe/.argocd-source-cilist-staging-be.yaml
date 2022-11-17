@@ -1,0 +1,3 @@
+kustomize:
+  images:
+  - ravennaras/cilist-staging-be:be-21d07
