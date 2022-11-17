@@ -2,7 +2,7 @@ namePrefix: cilist-staging-
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-# - backend.yaml
+- backend.yaml
 - frontend.yaml
 # images:
 # - name: backend 
