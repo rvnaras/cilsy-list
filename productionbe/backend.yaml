@@ -39,13 +39,13 @@ spec:
   ipFamilies:
   - IPv4
   ports:
-  - port: 80
+  - port: 5000
     protocol: TCP
     targetPort: 5000
   selector:
     app: cilist
     tier: backend
-  type: LoadBalancer
+  type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
