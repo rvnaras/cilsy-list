@@ -42,8 +42,8 @@ pipeline {
 	      echo 'version is' ${VERSION}
               echo 'building deployment image'
               echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
-              docker build -f ./backend/Dockerfile.be -t ravennaras/cilist-staging-be:be-${VERSION} . --network host --no-cache --pull
-              docker build -f ./frontend/Dockerfile.fe -t ravennaras/cilist-staging-fe:fe-${VERSION} . --network host --no-cache --pull
+              docker build -f ./src/backend/Dockerfile.be -t ravennaras/cilist-staging-be:be-${VERSION} . --network host --no-cache --pull
+              docker build -f ./src/frontend/Dockerfile.fe -t ravennaras/cilist-staging-fe:fe-${VERSION} . --network host --no-cache --pull
             '''
         }
       }
@@ -52,7 +52,7 @@ pipeline {
       steps {
         container('docker') {
             sh '''
-              echo 'check deployment image vulnerabilities'
+              echo 'test something here'
               # docker run --network host aquasec/trivy image ravennaras/cilist-staging-be:be-${VERSION} --security-checks vuln
               # docker run --network host aquasec/trivy image ravennaras/cilist-staging-fe:fe-${VERSION} --security-checks vuln
               docker push ravennaras/cilist-staging-be:be-${VERSION}
