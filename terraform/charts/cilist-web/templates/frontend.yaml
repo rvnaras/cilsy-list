@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.frontend.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.labels.name }}
+      tier: {{ .Values.labels.frontend.tier }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.labels.name }}
+        tier: {{ .Values.labels.frontend.tier }}
+    spec:
+      containers:
+      - image: {{ .Values.deployment.frontend.image }}
+        name: {{ .Values.deployment.frontend.container }}
+        ports:
+        - containerPort: {{ .Values.deployment.frontend.port }}
+        env:
+        - name: REACT_APP_BACKEND_URL
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.deployment.frontend.configmap }}
+              key: REACT_APP_BACKEND_URL
+      restartPolicy: Always

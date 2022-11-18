@@ -1,0 +1,37 @@
+deployment: 
+  backend:
+    name: cilist-be
+    image: ravennaras/cilist:backend-v3
+    container: cilist-be
+    port: 80
+    targetport: 5000
+    configmap: configmap-be
+    service: cilist-be-svc
+  frontend:
+    name: cilist-fe
+    image: ravennaras/cilist:frontend-v3
+    container: cilist-fe
+    port: 80
+    targetport: 3000
+    configmap: configmap-fe
+    service: cilist-fe-svc
+    ingress: cilist-ingress
+
+labels:
+  name: cilist
+  backend:
+    tier: backend
+  frontend:
+    tier: frontend
+  
+secret:
+  Y2lsaXN0LXNlY3JldA: cilist-secret
+  REFUQUJBU0VfVVNFUk5BTUU: DATABASE_USERNAME
+  REFUQUJBU0VfUEFTU1dPUkQ: DATABASE_PASSWORD
+  REFUQUJBU0VfSE9TVA: DATABASE_HOST
+  REFUQUJBU0VfREFUQUJBU0U: DATABASE_DATABASE
+  REJfVVNFUg: DB_USER
+  REJfUEFTUw: DB_PASS
+  REJfRU5EUE9JTlQ: DB_ENDPOINT
+  REJfU0VMRUNU: DB_SELECT
+

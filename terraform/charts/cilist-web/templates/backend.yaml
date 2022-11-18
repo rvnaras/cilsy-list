@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.backend.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.labels.name }}
+      tier: {{ .Values.labels.backend.tier }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.labels.name }}
+        tier: {{ .Values.labels.backend.tier }}
+    spec:
+      containers:
+      - image: {{ .Values.deployment.backend.image }}
+        imagePullPolicy: Always
+        name: {{ .Values.deployment.backend.container }}
+        ports:
+        - containerPort: {{ .Values.deployment.backend.port }}
+        env:
+        - name: BASE_URL_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.deployment.backend.configmap }}
+              key: BASE_URL_PORT
+        - name: DATABASE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.deployment.backend.configmap }}
+              key: DATABASE_PORT
+        - name: {{ .Values.secret.REFUQUJBU0VfVVNFUk5BTUU }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.Y2lsaXN0LXNlY3JldA }}
+              key: {{ .Values.secret.REJfVVNFUg }}
+        - name: {{ .Values.secret.REFUQUJBU0VfUEFTU1dPUkQ }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.Y2lsaXN0LXNlY3JldA }}
+              key: {{ .Values.secret.REJfUEFTUw }}
+        - name: {{ .Values.secret.REFUQUJBU0VfSE9TVA }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.Y2lsaXN0LXNlY3JldA }}
+              key: {{ .Values.secret.REJfRU5EUE9JTlQ }}
+        - name: {{ .Values.secret.REFUQUJBU0VfREFUQUJBU0U }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.Y2lsaXN0LXNlY3JldA }}
+              key: {{ .Values.secret.REJfU0VMRUNU }}
+      restartPolicy: Always
