@@ -52,7 +52,6 @@ kind: Deployment
 metadata:
   name: cilist-be
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: cilist
